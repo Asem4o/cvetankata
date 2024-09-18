@@ -1,0 +1,31 @@
+{# templates/admin/test_form.html.Twig #}
+
+{{ form_start(form) }}
+
+    {{ form_row(form.title) }}
+    {{ form_row(form.discipline) }}
+    {{ form_row(form.timeLimit) }}
+
+<h3>Questions</h3>
+<div id="questions-wrapper">
+    {{ form_widget(form.questions) }}  {# Render all questions and their nested answers #}
+</div>
+
+<button id="add-question" type="button" class="btn btn-success">Add Question</button>
+
+<button type="submit" class="btn btn-primary">Save</button>
+
+{{ form_end(form) }}
+
+<script>
+    let $questionsWrapper = $('#questions-wrapper');
+    let $addQuestionButton = $('#add-question');
+    let prototype = $questionsWrapper.data('prototype');
+    let index = $questionsWrapper.children().length;
+
+    $addQuestionButton.click(function () {
+        let newForm = prototype.replace(/__name__/g, index);
+        index++;
+        $questionsWrapper.append(newForm);
+    });
+</script>

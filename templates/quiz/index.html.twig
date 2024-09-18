@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Тест ОК{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><text y='1.2em' font-size='96'>⚫️</text><text y='1.3em' x='0.2em' font-size='76' fill='#fff'>sf</text></svg>">
+    <style>
+        body {
+            background: linear-gradient(to right, #dae2f8, #d6a4a4); /* Light blue to light red gradient */
+        }
+        .correct { color: green; }
+        .incorrect { color: red; }
+        .question-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #ffffff; /* Default background color for questions */
+        }
+        /* Alternate background colors */
+        .question-container:nth-child(odd) {
+            background-color: #f0f0f0; /* Light grey for odd questions */
+        }
+        #timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff0000; /* Red color for the timer */
+            margin-bottom: 20px;
+        }
+
+    </style>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<h1>Изберете дисциплина</h1>
+<form method="post" id="testForm">
+    <div class="form-group">
+        <select name="test" class="form-control" id="testSelect">
+            <option value="">Избери дисциплина...</option>
+            {% for test in alltests %}
+                <option value="{{ test.discipline.id }}">{{ test.title }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
+
+<script>
+    document.getElementById('testSelect').addEventListener('change', function () {
+        var disciplineId = this.value;
+        if (disciplineId) {
+            window.location.href = '/quiz/?discipline_id=' + disciplineId;
+        }
+    });
+</script>
+
+{% if questions is not empty %}
+    <h1>Тест по дисциплината: {{ discipline.name }}</h1>
+
+    <!-- Timer display -->
+    <div id="timer"></div>
+
+    <form method="post" id="quizForm">
+        {% for shuffledQuestion in questions %}
+            <div class="question-container">
+                <p>Question: {{ shuffledQuestion.question.getText() }}</p>
+
+                {% set questionHash = shuffledQuestion.questionHash %}  <!-- Use hashed question GUID -->
+
+                {% for answer in shuffledQuestion.shuffledAnswers %}
+                    {% set answerHash = answer.hashedGuid %}  <!-- Use hashed answer GUID -->
+
+                    {% if shuffledQuestion.question.getMultipleCorrect() %}
+                        <label>
+                            <input type="checkbox" name="question_{{ questionHash }}[]" value="{{ answerHash }}">
+                            {{ answer.getText() }}
+                        </label>
+                    {% else %}
+                        <label>
+                            <input type="radio" name="question_{{ questionHash }}" value="{{ answerHash }}">
+                            {{ answer.getText() }}
+                        </label>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+
+
+    <script>
+        var timeLimit = {{ timeLimit * 60 }};  // Convert timeLimit from minutes to seconds
+
+        // Function to format the time into mm:ss
+        function formatTime(seconds) {
+            var minutes = Math.floor(seconds / 60);
+            var seconds = seconds % 60;
+            return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+        }
+
+        // Function to update the timer every second
+        function updateTimer() {
+            var timerElement = document.getElementById('timer');
+            timerElement.textContent = "Оставащо време: " + formatTime(timeLimit);
+
+            if (timeLimit <= 0) {
+                // Automatically redirect to profile page when time is up
+                document.getElementById('quizForm').submit();  // Submit the form automatically when time is up
+            } else {
+                timeLimit--;
+                setTimeout(updateTimer, 1000);  // Call updateTimer every second
+            }
+        }
+
+        // Start the timer when the page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            updateTimer();
+        });
+    </script>
+
+
+{% else %}
+    <p>Изберете дисциплина, за да започнете теста.</p>
+{% endif %}
+
+{% if results is not empty %}
+    <h2>Резултати</h2>
+    {% for result in results %}
+        <div class="{% if result.isCorrect %}correct{% else %}incorrect{% endif %}">
+            Въпрос {{ loop.index }}: {{ result.question }}<br>
+            Вашият отговор:
+            {% if result.isCorrect %}
+                <span style="color: green;">{{ result.userAnswerTexts }}</span> е <strong style="color: green;">правилен</strong>
+            {% else %}
+                <span style="color: red;">{{ result.userAnswerTexts }}</span> е <strong style="color: red;">грешен</strong>. Верният отговор е: <span style="color: black;">{{ result.correctAnswerTexts }}</span>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    {% if grade is not null %}
+        <h2>Оценката ти е : {{ grade }}</h2>
+    {% endif %}
+{% else %}
+    <p>Моля, отговорете на въпросите и натиснете бутона за проверка.</p>
+{% endif %}
+
+</body>
+</html>

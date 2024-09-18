@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Select a Discipline{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>Select a Discipline to Solve Tests</h2>
+        <ul class="list-group">
+            {% for discipline in disciplines %}
+                <li class="list-group-item">
+                    <a href="{{ path('test_solve', { 'disciplineId': discipline.id }) }}">
+                        {{ discipline.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

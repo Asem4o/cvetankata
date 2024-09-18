@@ -1,0 +1,211 @@
+/* General Body Styling */
+body {
+    background-color: #d6a4a4;
+    background: linear-gradient(to right, #dae2f8, #d6a4a4); /* Light blue to light red gradient */
+}
+
+/* Login Box */
+.login-box {
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: aqua;
+    text-align: center;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.login-box h2 {
+    margin: 0 0 20px;
+    padding: 0;
+    color: #333;
+    font-size: 1.5em;
+}
+
+/* Textbox and Input Styling */
+.textbox {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.textbox label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.textbox input {
+    width: 100%;
+    padding: 10px;
+    background: #f2f2f2;
+    border: none;
+    outline: none;
+    color: #333;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+/* Button Styling */
+.btn {
+    width: 100%;
+    background: #333;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #555;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .login-box {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .login-box h2 {
+        font-size: 1.2em;
+    }
+
+    .textbox input, .btn {
+        font-size: 14px;
+    }
+}
+
+/* Grade Container */
+.grade-container {
+    display: flex;
+    flex-direction: column;
+    background: greenyellow;
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.grade-row {
+    display: flex;
+    justify-content: space-between;
+    color: red;
+}
+
+.header {
+    color: rebeccapurple;
+    font-weight: bold;
+}
+
+.grade-box {
+    background-color: cadetblue;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    flex: 1;
+    text-align: center;
+}
+
+.grade-row:last-child .grade-box {
+    border-bottom: none;
+}
+
+.grade-box:nth-child(1) {
+    border-right: 1px solid #ccc;
+}
+
+/* Question Table */
+.question-table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.header-row, .row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-cell, .cell {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    flex: 1;
+    text-align: center;
+}
+
+.row:last-child .cell {
+    border-bottom: none;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Question Container */
+.question-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
+.question-container:nth-child(odd) {
+    background-color: #f0f0f0;
+}
+
+/* Correct/Incorrect Styling */
+.correct {
+    color: green;
+}
+
+.incorrect {
+    color: red;
+}
+
+/* Question Block */
+.question-block {
+    background-color: grey;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Button Spacing */
+.list-group-item div {
+    display: flex;
+    gap: 10px;
+}
+
+/* Section Boxes */
+.section-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.section-box h2 {
+    margin-bottom: 15px;
+}
+
+.section-box .table, .section-box .list-group-item {
+    margin-bottom: 0;
+}

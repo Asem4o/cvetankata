@@ -1,0 +1,55 @@
+{# templates/admin/test_edit.html.Twig #}
+
+{% extends 'base.html.Twig' %}
+
+{% block title %}Edit Test{% endblock %}
+
+{% block body %}
+    <h1>Edit Test</h1>
+
+    <form method="POST">
+        <div class="form-group mb-3">
+            <label for="test_title" class="form-label">Test Title:</label>
+            <input type="text" class="form-control" id="test_title" name="test_title" value="{{ test.title }}" required>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="time_limit" class="form-label">Time Limit (in minutes):</label>
+            <input type="number" class="form-control" id="time_limit" name="time_limit" value="{{ test.timeLimit }}" required>
+        </div>
+
+        <h3>Questions and Answers</h3>
+        {% for question in test.questions %}
+            <div class="mb-4 p-3 border rounded question-block">
+                <div class="form-group mb-3">
+                    <label for="question_{{ loop.index0 }}" class="form-label">Question {{ loop.index }}:</label>
+                    <input type="text" class="form-control" id="question_{{ loop.index0 }}" name="questions[{{ loop.index0 }}][text]" value="{{ question.text }}" required>
+                </div>
+
+                <!-- Checkbox for multiple correct answers -->
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="multiple_correct_{{ loop.index0 }}" name="questions[{{ loop.index0 }}][multiple_correct]" {% if question.multipleCorrect %}checked{% endif %}>
+                    <label class="form-check-label" for="multiple_correct_{{ loop.index0 }}">Allow multiple correct answers?</label>
+                </div>
+
+                <h4>Answers</h4>
+                <div class="answers-block">
+                    {% for answer in question.answers %}
+                        <div class="form-group mb-2">
+                            <label for="answer_{{ loop.parent.loop.index0 }}_{{ loop.index0 }}" class="form-label">Answer {{ loop.index }}:</label>
+                            <input type="text" class="form-control" id="answer_{{ loop.parent.loop.index0 }}_{{ loop.index0 }}" name="questions[{{ loop.parent.loop.index0 }}][answers][{{ loop.index0 }}][text]" value="{{ answer.text }}" required>
+
+                            <input class="form-check-input" type="checkbox" id="correct_{{ loop.parent.loop.index0 }}_{{ loop.index0 }}" name="questions[{{ loop.parent.loop.index0 }}][answers][{{ loop.index0 }}][is_correct]" {% if answer.isCorrect %}checked{% endif %}>
+                            <label for="correct_{{ loop.parent.loop.index0 }}_{{ loop.index0 }}" class="form-check-label">Correct?</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </form>
+
+    <a href="{{ path('admin_test_show', { 'id': test.id }) }}" class="btn btn-primary mt-3">Back to Test Details</a>
+{% endblock %}

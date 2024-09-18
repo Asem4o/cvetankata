@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        .profile-container {
+            display: flex;
+        }
+        .left-box {
+            width: 25%;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .right-box {
+            width: 70%;
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-left: 20px;
+        }
+        .profile-picture {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+        .list-group-item a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .list-group-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="profile-container">
+            <!-- Left Side: List of Disciplines -->
+            <div class="left-box">
+
+                <h2>Your Available Tests</h2>
+                <ul>
+                    {% if tests is not empty %}
+                        {% for test in tests %}
+                            <li>
+                                <a href="{{ path('quiz', { 'discipline_id': test.discipline.id }) }}">
+                                    {{ test.title }} ( Discipline {{ test.discipline.name }} )
+                                </a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li>No tests available.</li>
+                    {% endif %}
+                </ul>
+
+            </div>
+
+            <!-- Right Side: Profile Information -->
+            <div class="right-box">
+                <h2>Profile</h2>
+
+                <!-- Profile Picture -->
+                <div class="text-center mb-3">
+                    {% if user.profilePicture %}
+                        <img src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="{{ user.name }}" class="profile-picture">
+                    {% else %}
+                        <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile" class="profile-picture">
+                    {% endif %}
+                </div>
+
+                <h4>{{ user.name }}</h4>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone Number:</strong> {{ user.phoneNumber }}</p>
+            </div>
+        </div>
+
+        <br> <a href="{{ path('edit_profile') }}" >Edit Profile</a>
+    </div>
+{% endblock %}

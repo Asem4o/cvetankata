@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Create New Discipline</h1>
+
+        {{ form_start(form) }}
+        {{ form_row(form.name) }}  <!-- Discipline name field -->
+        <button class="btn btn-success mt-3">Create Discipline</button>
+        {{ form_end(form) }}
+
+        <a href="{{ path('admin') }}" class="btn btn-secondary mt-3">Back to Admin Panel</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{# templates/admin/index.html.Twig #}
+
+{% extends 'base.html.Twig' %}
+
+{% block title %}Admin - Student Grades{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <!-- Box for Students and Their Grades -->
+        <div class="section-box grades-box">
+            <h2>Students and Their Grades</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Discipline</th>
+                    <th>Grade</th>
+                    <th>Created At</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for record in studentsWithGrades %}
+                    <tr>
+                        <td>{{ record.student }}</td>
+                        <td>{{ record.discipline }}</td>
+                        <td>{{ record.grade }}</td>
+                        <td>{{ record.createdAt }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="{{ path('admin_export') }}" class="btn btn-success mt-3">Download as Excel</a>
+        </div>
+
+        <!-- Box for All Tests -->
+        <div class="section-box tests-box">
+            <h2>All Tests</h2>
+            <a href="{{ path('create_test_manual') }}" class="btn btn-primary mb-3">Create Test</a>
+
+            <ul class="list-group">
+                {% for test in tests %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ test.title }}
+                        <div>
+                            <a href="{{ path('admin_test_show', { 'id': test.id }) }}" class="btn btn-info">Show Test</a>
+                            <a href="{{ path('admin_test_edit', { 'id': test.id }) }}" class="btn btn-warning">Edit Test</a>
+                            <form action="{{ path('admin_test_delete', { 'id': test.id }) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this test?');">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+{% endblock %}

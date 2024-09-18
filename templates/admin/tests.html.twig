@@ -1,0 +1,37 @@
+{# templates/admin/tests.html.Twig #}
+
+{% extends 'base.html.Twig' %}
+
+{% block title %}Tests List{% endblock %}
+
+{% block body %}
+    <h1>All Tests</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Discipline</th>
+            <th>Time Limit</th>
+            <th>Max Score</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for test in tests %}
+            <tr>
+                <td>{{ test.title }}</td>
+                <td>{{ test.discipline.name }}</td>
+                <td>{{ test.timeLimit }}</td>
+                <td>{{ test.maxScore }}</td>
+                <td>
+                    <a href="{{ path('admin_test_show', {id: test.id}) }}" class="btn btn-info">View</a>
+                    <a href="{{ path('admin_test_edit', {id: test.id}) }}" class="btn btn-warning">Edit</a>
+                    <form action="{{ path('admin_test_delete', {id: test.id}) }}" method="POST" style="display:inline-block;">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,58 @@
+{# templates/test/create.html.Twig #}
+
+{% extends 'base.html.Twig' %}
+
+{% block title %}Create New Test{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Create New Test</h1>
+
+    <form method="post" action="{{ path('create_test_manual') }}">
+
+        <div class="form-group mb-3">
+            <label for="test_title" class="form-label">Test Title:</label>
+            <input type="text" class="form-control" id="test_title" name="test_title" required>
+        </div>
+
+        <!-- Discipline input (instead of a dropdown or radio buttons) -->
+        <div class="form-group mb-3">
+            <label for="discipline" class="form-label">Discipline:</label>
+            <input type="text" class="form-control" id="discipline" name="discipline" required>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="time_limit" class="form-label">Time Limit (in minutes):</label>
+            <input type="number" class="form-control" id="time_limit" name="time_limit" required>
+        </div>
+
+        <h3>Questions</h3>
+        {% for i in 0..9 %}
+            <div class="mb-4 p-3 border rounded question-block">
+                <div class="form-group mb-3">
+                    <label for="question_{{ i }}" class="form-label">Question {{ i + 1 }}:</label>
+                    <input type="text" class="form-control" id="question_{{ i }}" name="questions[{{ i }}][text]" required>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="multiple_correct_{{ i }}" name="questions[{{ i }}][multiple_correct]">
+                    <label for="multiple_correct_{{ i }}" class="form-check-label">Allow multiple correct answers?</label>
+                </div>
+
+                <h4>Answers</h4>
+                <div class="answers-block">
+                    {% for j in 0..2 %}
+                        <div class="form-group mb-2">
+                            <label for="answer_{{ i }}_{{ j }}" class="form-label">Answer {{ j + 1 }}:</label>
+                            <input type="text" class="form-control" id="answer_{{ i }}_{{ j }}" name="questions[{{ i }}][answers][{{ j }}][text]" required>
+
+                            <input class="form-check-input" type="checkbox" id="correct_{{ i }}_{{ j }}" name="questions[{{ i }}][answers][{{ j }}][is_correct]">
+                            <label for="correct_{{ i }}_{{ j }}" class="form-check-label">Correct?</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Create Test</button>
+    </form>
+{% endblock %}
